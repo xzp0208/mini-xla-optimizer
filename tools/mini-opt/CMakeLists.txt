@@ -7,11 +7,13 @@ llvm_update_compile_flags(mini-opt)
 target_link_libraries(mini-opt
   PRIVATE
   MLIRMini
+  MLIRMiniTransforms
   MLIRIR
   MLIRParser
   MLIRPass
   MLIRSupport
   MLIRFuncDialect
+  MLIRArithDialect
   MLIROptLib
 )
 

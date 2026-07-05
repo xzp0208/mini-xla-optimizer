@@ -22,3 +22,17 @@ Lowering to LLVM
     |
     v
 Codegen
+
+## Day 2 Notes: Mini Dialect Skeleton
+
+Today I implemented the first version of the Mini dialect skeleton.
+
+Implemented files:
+
+```text
+include/Mini/MiniOps.td
+include/Mini/MiniDialect.h
+include/Mini/MiniOps.h
+lib/Dialect/Mini/MiniDialect.cpp
+lib/Dialect/Mini/MiniOps.cpp
+tools/mini-opt/mini-opt.cpp

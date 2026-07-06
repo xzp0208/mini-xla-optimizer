@@ -37,3 +37,22 @@ Lowering to Affine / Linalg / LLVM
     |
     v
 Correctness Test + Benchmark
+
+
+## Build
+
+```bash
+conda activate mlir-dev
+
+export LLVM_BUILD_DIR=$HOME/compiler/llvm-project/build-mlir
+export PATH=$LLVM_BUILD_DIR/bin:$PATH
+
+mkdir -p build
+cd build
+
+cmake -G Ninja .. \
+  -DMLIR_DIR=$LLVM_BUILD_DIR/lib/cmake/mlir \
+  -DLLVM_DIR=$LLVM_BUILD_DIR/lib/cmake/llvm \
+  -DCMAKE_BUILD_TYPE=Release
+
+ninja -j8

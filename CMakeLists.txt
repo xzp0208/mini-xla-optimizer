@@ -29,3 +29,13 @@ link_directories(${LLVM_BUILD_LIBRARY_DIR})
 add_subdirectory(include)
 add_subdirectory(lib)
 add_subdirectory(tools)
+
+add_custom_target(check-mini
+  COMMAND ${CMAKE_COMMAND} -E env
+          BUILD_DIR=${CMAKE_BINARY_DIR}
+          LLVM_BUILD_DIR=$ENV{LLVM_BUILD_DIR}
+          ${CMAKE_CURRENT_SOURCE_DIR}/test/run_filecheck.sh
+  DEPENDS mini-opt
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMENT "Running Mini-XLA-Optimizer FileCheck tests"
+)

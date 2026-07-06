@@ -110,4 +110,40 @@ def PowOp : Mini_Op<"pow", [Pure, SameOperandsAndResultType]> {
   let results = (outs AnyType:$result);
 }
 
+//===----------------------------------------------------------------------===//
+// mini.fused_elementwise
+//===----------------------------------------------------------------------===//
+
+def FusedElementwiseOp : Mini_Op<"fused_elementwise", [Pure]> {
+  let summary = "fused elementwise operation";
+
+  let description = [{
+    The mini.fused_elementwise operation represents a fused elementwise
+    computation group.
+
+    In the first version, this op is a high-level fused representation.
+    It records the fusion expression and simple cost-model statistics as
+    attributes, but does not yet contain a region body.
+
+    Example:
+
+    %0 = "mini.fused_elementwise"(%x, %scale, %bias)
+      {
+        fusion_expr = "mini.mul -> mini.add",
+        fusion_ops = 2 : i32,
+        expensive_math_ops = 0 : i32
+      }
+      : (tensor<4xf32>, tensor<4xf32>, tensor<4xf32>) -> tensor<4xf32>
+  }];
+
+  let arguments = (ins
+    Variadic<AnyType>:$inputs,
+    StrAttr:$fusion_expr,
+    I32Attr:$fusion_ops,
+    I32Attr:$expensive_math_ops
+  );
+
+  let results = (outs AnyType:$result);
+}
+
 #endif // MINI_OPS

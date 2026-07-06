@@ -10,16 +10,18 @@ namespace mini {
 std::unique_ptr<mlir::Pass> createCanonicalizeMiniPass();
 std::unique_ptr<mlir::Pass> createMathEliminateMiniPass();
 std::unique_ptr<mlir::Pass> createFusionAnalysisMiniPass();
-
+std::unique_ptr<mlir::Pass> createFuseElementwiseMiniPass();
 
 void registerCanonicalizeMiniPass();
 void registerMathEliminateMiniPass();
 void registerFusionAnalysisMiniPass();
+void registerFuseElementwiseMiniPass();
 
 inline void registerMiniPasses() {
   registerCanonicalizeMiniPass();
   registerMathEliminateMiniPass();
   registerFusionAnalysisMiniPass();
+  registerFuseElementwiseMiniPass();
 }
 
 } // namespace mini

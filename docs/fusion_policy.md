@@ -17,3 +17,10 @@ A root operation can become a fusion candidate if its producer chain satisfies:
 4. producer result has only one use
 5. fusion op count <= max_ops_in_fusion
 6. expensive math op count <= max_expensive_math_ops
+
+## Day 7 Update: Fuse Elementwise Rewrite
+
+The project now supports a rewrite pass:
+
+```bash
+mini-opt input.mlir --mini-fuse-elementwise

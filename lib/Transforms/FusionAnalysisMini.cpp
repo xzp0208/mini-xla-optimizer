@@ -13,8 +13,8 @@ using namespace mlir;
 
 namespace {
 
-static constexpr unsigned kMaxOpsInFusion = 4;
-static constexpr unsigned kMaxExpensiveMathOps = 1;
+static constexpr unsigned kMaxOpsInFusion = 4;        // 一个融合组里最多只能有 4 个算子
+static constexpr unsigned kMaxExpensiveMathOps = 1;  // 一个融合组里最多只能有 1 个高开销数学算子（如 pow）
 
 // 目前 V1 只把 add/mul/div/pow 当作 elementwise op。
 // 后面加 mini.exp / mini.log / mini.tanh / mini.sqrt 后，再扩展这里。
@@ -53,27 +53,21 @@ static void collectFusionOps(Operation *op,
     return;
 
   for (Value operand : op->getOperands()) {
-    Operation *producer = operand.getDefiningOp();
-
-    if (!producer)
-      continue;
-
-    if (!isElementwiseOp(producer))
-      continue;
-
-    if (producer->getBlock() != op->getBlock())
-      continue;
-
-    if (producer->getNumResults() != 1)
-      continue;
-
-    if (!producer->getResult(0).hasOneUse())
-      continue;
-
-    collectFusionOps(producer, fusionOps);
+    Operation *producer = operand.getDefiningOp(); // 顺着输入连线找到上游的“生产者”操作
+    if (!producer) continue;
+  
+    if (!isElementwiseOp(producer)) continue; // 门槛 1：生产者也必须是 elementwise 算子
+  
+    if (producer->getBlock() != op->getBlock()) continue; // 门槛 2：必须在同一个控制流块（Block）内
+  
+    if (producer->getNumResults() != 1) continue; // 门槛 3：生产者只能有一个输出结果
+  
+    if (!producer->getResult(0).hasOneUse()) continue; // 门槛 4：核心！生产者的结果只能被当前这个消费者使用！
+    
+    collectFusionOps(producer, fusionOps); // 递归向上追溯
   }
-
-  fusionOps.push_back(op);
+  fusionOps.push_back(op); // 递归归来时放入数组，确保了拓扑排序（生产者永远在消费者前面）
+    
 }
 
 struct FusionStats {

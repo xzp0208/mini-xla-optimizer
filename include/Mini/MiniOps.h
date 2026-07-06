@@ -9,6 +9,9 @@
 #include "mlir/Interfaces/SideEffectInterfaces.h"
 #include "mlir/Interfaces/InferTypeOpInterface.h"
 // =============================================
+// ====== 新增下面这行 ======
+#include "mlir/Bytecode/BytecodeOpInterface.h" 
+#include "mlir/Interfaces/InferTypeOpInterface.h"
 
 #define GET_OP_CLASSES
 #include "Mini/MiniOps.h.inc"

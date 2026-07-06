@@ -1,5 +1,6 @@
 add_mlir_library(MLIRMiniTransforms
   CanonicalizeMini.cpp
+  MathEliminateMini.cpp
 
   LINK_LIBS PUBLIC
   MLIRMini

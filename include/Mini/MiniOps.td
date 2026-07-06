@@ -66,4 +66,48 @@ def MulOp : Mini_Op<"mul", [Pure, SameOperandsAndResultType]> {
   let results = (outs AnyType:$result);
 }
 
+//===----------------------------------------------------------------------===//
+// mini.div
+//===----------------------------------------------------------------------===//
+
+def DivOp : Mini_Op<"div", [Pure, SameOperandsAndResultType]> {
+  let summary = "elementwise divide operation";
+
+  let description = [{
+    The mini.div operation represents an elementwise division.
+
+    Example:
+
+      %0 = "mini.div"(%a, %b)
+        : (tensor<4xf32>, tensor<4xf32>) -> tensor<4xf32>
+  }];
+
+  let arguments = (ins AnyType:$lhs, AnyType:$rhs);
+  let results = (outs AnyType:$result);
+}
+
+//===----------------------------------------------------------------------===//
+// mini.pow
+//===----------------------------------------------------------------------===//
+
+def PowOp : Mini_Op<"pow", [Pure, SameOperandsAndResultType]> {
+  let summary = "elementwise power operation";
+
+  let description = [{
+    The mini.pow operation represents an elementwise power operation.
+
+    In V1, the exponent is represented as a tensor constant with the same type
+    as the base tensor. For example, pow(x, -2) is represented as:
+
+      %c_neg2 = arith.constant dense<-2.0> : tensor<4xf32>
+      %0 = "mini.pow"(%x, %c_neg2)
+        : (tensor<4xf32>, tensor<4xf32>) -> tensor<4xf32>
+
+    This design keeps the first implementation simple.
+  }];
+
+  let arguments = (ins AnyType:$lhs, AnyType:$rhs);
+  let results = (outs AnyType:$result);
+}
+
 #endif // MINI_OPS

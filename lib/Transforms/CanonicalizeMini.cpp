@@ -225,8 +225,7 @@ std::unique_ptr<mlir::Pass> mini::createCanonicalizeMiniPass() {
   return std::make_unique<CanonicalizeMiniPass>();
 }
 
-// 将该 Pass 注册到 MLIR 全局注册表中的函数
-// 一旦在工具初始化时调用它，mlir-opt 命令行工具就能通过 "-mini-canonicalize" 参数直接调用本 Pass
-void mini::registerMiniPasses() {
+void mini::registerCanonicalizeMiniPass() {
   static PassRegistration<CanonicalizeMiniPass> pass;
 }
+

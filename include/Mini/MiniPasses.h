@@ -8,8 +8,15 @@
 namespace mini {
 
 std::unique_ptr<mlir::Pass> createCanonicalizeMiniPass();
+std::unique_ptr<mlir::Pass> createMathEliminateMiniPass();
 
-void registerMiniPasses();
+void registerCanonicalizeMiniPass();
+void registerMathEliminateMiniPass();
+
+inline void registerMiniPasses() {
+  registerCanonicalizeMiniPass();
+  registerMathEliminateMiniPass();
+}
 
 } // namespace mini
 
